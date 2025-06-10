@@ -3,13 +3,11 @@ import { Outlet } from '@tanstack/react-router';
 
 export default function App() {
   return (
-    <>
-    <div className="flex min-h-screen bg-white dark:bg-gray-800">
+    <div className="flex h-screen bg-white dark:bg-gray-800">
       <SideBar />
-      <main className="flex-1 p-6">
+      <main className="flex-1 overflow-y-auto p-6">
         <Outlet />
       </main>
     </div>
-    </>
   );
 }
