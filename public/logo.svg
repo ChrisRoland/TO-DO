@@ -1,0 +1,11 @@
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Todo App Logo">
+  <rect width="64" height="64" rx="12" fill="#2a71bd" />
+  <polyline
+    points="18,34 28,44 46,20"
+    fill="none"
+    stroke="#FFFFFF"
+    stroke-width="6"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+</svg>
