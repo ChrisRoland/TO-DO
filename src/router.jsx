@@ -1,4 +1,3 @@
-// src/router.jsx
 import React from 'react'
 import {
   createRootRoute,
@@ -9,22 +8,19 @@ import {
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 
 import App from './App'
-import TodoList from './pages/TodoList'
-import TodoDetail from './pages/TodoDetail'
-import Important from './pages/Important'
-import NotFound from './pages/NotFound'
-import ErrorComponent from './pages/ErrorComponent'
+import TodoList from './routes/TodoList'
+import TodoDetail from './routes/TodoDetail'
+import Important from './routes/Important'
+import NotFound from './routes/NotFound'
+import ErrorComponent from './routes/ErrorComponent'
 
 
-// 1) Define root-layout route
 const rootRoute = createRootRoute({
-  // Renders your <App> (which contains the <Outlet/> for children)
   component: App,
   notFoundComponent: NotFound,
   errorComponent: ErrorComponent,
 })
 
-// 2) Define all child routes
 const listRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/',
@@ -51,18 +47,17 @@ const notFoundRoute = createRoute({
   component: NotFound,
 })
 
-// 3) Build the route tree and router
+// route tree and router
 const routeTree = rootRoute.addChildren([
   listRoute,
   detailRoute,
   importantRoute,
-  notFoundRoute, // Add the catch-all route
+  notFoundRoute, 
 ])
 
 const router = createRouter({ 
   routeTree,
-  defaultNotFoundComponent: NotFound, // Router-level fallback
+  defaultNotFoundComponent: NotFound, // fallback
 })
 
-// 4) Export the router instance directly
 export default router
