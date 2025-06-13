@@ -60,6 +60,7 @@ export default function DeleteTodoModal({ isOpen, onClose, todo }) {
             type="button" 
             variant="outline" 
             onClick={onClose}
+            className="max-sm:mt-2 max-sm:font-semibold"
             disabled={deleteTodoMutation.isPending}
           >
             Cancel
@@ -69,7 +70,7 @@ export default function DeleteTodoModal({ isOpen, onClose, todo }) {
             variant="destructive" 
             onClick={handleDelete}
             disabled={deleteTodoMutation.isPending}
-            className="bg-red-600 hover:bg-red-700"
+            className="bg-red-600 hover:bg-red-700 max-sm:font-semibold"
           >
             {deleteTodoMutation.isPending ? "Deleting..." : "Delete Todo"}
           </Button>
