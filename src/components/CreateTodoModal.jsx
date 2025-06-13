@@ -67,7 +67,7 @@ export default function CreateTodoModal({ isOpen, onClose }) {
             >
               {(field) => (
                 <div>
-                  <Label htmlFor="create-name">Name *</Label>
+                  <Label htmlFor="create-name">Name <span className="text-red-500">*</span></Label>
                   <Input
                     id="create-name"
                     value={field.state.value}
