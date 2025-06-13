@@ -1,136 +1,3 @@
-// import React, { useState, useEffect } from "react";
-// import { useMutation, useQueryClient } from "@tanstack/react-query";
-// import { updateTodo } from "../api/todo";
-// import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
-// import { Button } from "@/components/ui/button";
-// import { Input } from "@/components/ui/input";
-// import { Label } from "@/components/ui/label";
-// import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-
-// export default function UpdateTodoModal({ isOpen, onClose, todo }) {
-//   const queryClient = useQueryClient();
-  
-//   const [form, setForm] = useState({
-//     name: "",
-//     description: "",
-//     status: "TODO"
-//   });
-
-//   const updateTodoMutation = useMutation({
-//     mutationFn: ({ id, ...data }) => updateTodo(id, data),
-//     onSuccess: () => {
-//       queryClient.invalidateQueries({ queryKey: ["todos"] });
-//       onClose();
-//     },
-//     onError: (error) => {
-//       console.error("Error updating todo:", error);
-//       // I may add toast notif here in the future
-//     }
-//   });
-
-//   // Populate on changes
-//   useEffect(() => {
-//     if (todo && isOpen) {
-//       setForm({
-//         name: todo.name || "",
-//         description: todo.description || "",
-//         status: todo.status || "TODO"
-//       });
-//     }
-//   }, [todo, isOpen]);
-
-//   // Reset form when modal closes
-//   useEffect(() => {
-//     if (!isOpen) {
-//       setForm({ name: "", description: "", status: "TODO" });
-//     }
-//   }, [isOpen]);
-
-//   const handleSubmit = (e) => {
-//     e.preventDefault();
-//     if (form.name.trim() && todo) {
-//       updateTodoMutation.mutate({
-//         id: todo.id,
-//         ...form
-//       });
-//     }
-//   };
-
-//   const handleInputChange = (field, value) => {
-//     setForm(prev => ({ ...prev, [field]: value }));
-//   };
-
-//   if (!todo) return null;
-
-//   return (
-//     <Dialog open={isOpen} onOpenChange={onClose}>
-//       <DialogContent>
-//         <DialogHeader>
-//           <DialogTitle>Edit Todo</DialogTitle>
-//         </DialogHeader>
-//         <form onSubmit={handleSubmit}>
-//           <div className="space-y-4 py-4">
-//             <div>
-//               <Label htmlFor="update-name">Name *</Label>
-//               <Input
-//                 id="update-name"
-//                 value={form.name}
-//                 onChange={(e) => handleInputChange("name", e.target.value)}
-//                 placeholder="Enter todo name..."
-//                 required
-//                 disabled={updateTodoMutation.isPending}
-//               />
-//             </div>
-//             <div>
-//               <Label htmlFor="update-description">Description</Label>
-//               <Input
-//                 id="update-description"
-//                 value={form.description}
-//                 onChange={(e) => handleInputChange("description", e.target.value)}
-//                 placeholder="Enter description (optional)..."
-//                 disabled={updateTodoMutation.isPending}
-//               />
-//             </div>
-//             <div>
-//               <Label htmlFor="update-status">Status</Label>
-//               <Select 
-//                 value={form.status} 
-//                 onValueChange={(value) => handleInputChange("status", value)}
-//                 disabled={updateTodoMutation.isPending}
-//               >
-//                 <SelectTrigger>
-//                   <SelectValue />
-//                 </SelectTrigger>
-//                 <SelectContent>
-//                   <SelectItem value="TODO">Todo</SelectItem>
-//                   <SelectItem value="IN_PROGRESS">In Progress</SelectItem>
-//                   <SelectItem value="DONE">Done</SelectItem>
-//                 </SelectContent>
-//               </Select>
-//             </div>
-//           </div>
-//           <DialogFooter>
-//             <Button 
-//               type="button" 
-//               variant="outline" 
-//               onClick={onClose}
-//               disabled={updateTodoMutation.isPending}
-//             >
-//               Cancel
-//             </Button>
-//             <Button 
-//               type="submit" 
-//               disabled={updateTodoMutation.isPending || !form.name.trim()}
-//             >
-//               {updateTodoMutation.isPending ? "Updating..." : "Update Todo"}
-//             </Button>
-//           </DialogFooter>
-//         </form>
-//       </DialogContent>
-//     </Dialog>
-//   );
-// }
-
 import React, { useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "@tanstack/react-form";
@@ -165,6 +32,7 @@ export default function UpdateTodoModal({ isOpen, onClose, todo }) {
     },
     onError: (error) => {
       console.error("Error updating todo:", error);
+        // I may add toast notif here in the future
     },
   });
 
@@ -222,7 +90,7 @@ export default function UpdateTodoModal({ isOpen, onClose, todo }) {
             >
               {(field) => (
                 <div>
-                  <Label htmlFor="update-name">Name *</Label>
+                  <Label htmlFor="update-name">Name <span className="text-red-500">*</span></Label>
                   <Input
                     id="update-name"
                     value={field.state.value}
@@ -249,7 +117,7 @@ export default function UpdateTodoModal({ isOpen, onClose, todo }) {
                     value={field.state.value}
                     onChange={(e) => field.handleChange(e.target.value)}
                     onBlur={field.handleBlur}
-                    placeholder="Enter description (optional)..."
+                    placeholder="Enter description ..."
                     disabled={updateTodoMutation.isPending}
                   />
                 </div>
@@ -283,6 +151,7 @@ export default function UpdateTodoModal({ isOpen, onClose, todo }) {
               type="button"
               variant="outline"
               onClick={onClose}
+              className="max-sm:mt-2 max-sm:font-semibold"
               disabled={updateTodoMutation.isPending}
             >
               Cancel
@@ -291,6 +160,7 @@ export default function UpdateTodoModal({ isOpen, onClose, todo }) {
               {([canSubmit]) => (
                 <Button
                   type="submit"
+                  className="max-sm:font-semibold"
                   disabled={!canSubmit || updateTodoMutation.isPending}
                 >
                   {updateTodoMutation.isPending ? "Updating..." : "Update Todo"}

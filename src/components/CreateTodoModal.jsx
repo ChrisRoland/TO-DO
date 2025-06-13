@@ -128,6 +128,7 @@ export default function CreateTodoModal({ isOpen, onClose }) {
               type="button"
               variant="outline"
               onClick={onClose}
+              className="max-sm:mt-2 max-sm:font-semibold"
               disabled={addTodoMutation.isPending}
             >
               Cancel
@@ -139,6 +140,7 @@ export default function CreateTodoModal({ isOpen, onClose }) {
                 <Button
                   type="submit"
                   disabled={!canSubmit || addTodoMutation.isPending}
+                  className="max-sm:font-semibold"
                 >
                   {addTodoMutation.isPending ? "Adding..." : "Add Todo"}
                 </Button>
