@@ -1,9 +1,39 @@
-import { Link } from '@tanstack/react-router';
+import { Link, useLocation } from '@tanstack/react-router';
 import { Sun, Moon, CheckSquare, Star, Archive, Menu, X } from 'lucide-react';
 import { useTheme } from '../theme-context';
 
 export default function SideBar({ isOpen, onClose }) {
   const { theme, toggleTheme } = useTheme();
+  const location = useLocation();
+
+  // Function to check if a route is active
+  const isActive = (path) => {
+    if (path === '/') {
+      return location.pathname === '/';
+    }
+    return location.pathname.startsWith(path);
+  };
+
+  const navItems = [
+    {
+      path: '/',
+      label: 'Todos',
+      icon: CheckSquare,
+      iconColor: 'text-blue-500',
+    },
+    {
+      path: '/important',
+      label: 'Important',
+      icon: Star,
+      iconColor: 'text-yellow-500',
+    },
+    {
+      path: '/archives',
+      label: 'Archives',
+      icon: Archive,
+      iconColor: 'text-gray-500',
+    },
+  ];
 
   return (
     <>
@@ -35,21 +65,43 @@ export default function SideBar({ isOpen, onClose }) {
         <nav className="space-y-4">
           <h1 className="text-2xl font-bold hidden lg:block">T0 + D0</h1>
           <ul className="space-y-2">
-            <li className="px-2 py-1 hover:bg-gray-300 active:bg-gray-300 dark:hover:bg-gray-700 dark:active:bg-gray-700 transition duration-300">
-              <Link to="/" className="flex gap-2 items-center" onClick={onClose}> 
-                <CheckSquare className="size-4 text-blue-500"/> Todos 
-              </Link>
-            </li>
-            <li className="px-2 py-1 hover:bg-gray-300 active:bg-gray-300 dark:hover:bg-gray-700 dark:active:bg-gray-700 transition duration-300">
-              <Link to="/important" className="flex gap-2 items-center" onClick={onClose}> 
-                <Star className="size-4 text-yellow-500"/> Important 
-              </Link>
-            </li>
-            <li className="px-2 py-1 hover:bg-gray-300 active:bg-gray-300 dark:hover:bg-gray-700 dark:active:bg-gray-700 transition duration-300">
-              <Link to="/archives" className="flex gap-2 items-center" onClick={onClose}> 
-                <Archive className="size-4 text-gray-500"/> Archives 
-              </Link>
-            </li>
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              const active = isActive(item.path);
+              
+              return (
+                <li 
+                  key={item.path}
+                  className={`
+                    px-2 py-1 rounded transition duration-300 border-2
+                    ${active 
+                      ? 'bg-gray-400 dark:bg-gray-300/30 border-gray-600 dark:border-gray-400 shadow-sm' 
+                      : 'border-transparent hover:bg-gray-300 active:bg-gray-300 dark:hover:bg-gray-700 dark:active:bg-gray-700'
+                    }
+                  `}
+                >
+                  <Link 
+                    to={item.path} 
+                    className={`
+                      flex gap-2 items-center
+                      ${active 
+                        ? ' font-semibold' 
+                        : 'text-gray-700 dark:text-gray-300'
+                      }
+                    `}
+                    onClick={onClose}
+                  > 
+                    <Icon 
+                      className={`
+                        size-4 
+                        ${active ? '' : item.iconColor}
+                      `}
+                    /> 
+                    {item.label}
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
         </nav>
         
