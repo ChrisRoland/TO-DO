@@ -20,13 +20,13 @@ export default function Archived() {
       {archived.length === 0 ? (
         <p>No archived tasks.</p>
       ) : (
-        <ul className="space-y-2">
+        <ul className="space-y-2 text-[19px]">
           {archived.map((t) => (
             <li key={t.id} className="p-2 border border-gray-500 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
               <Link to={`/todos/${t.id}`} className="font-medium">
                 {t.name} {" "}
               </Link>
-              <span className={`ml-2 text-xs ${t.priority === "HIGH" ? "text-red-500" : "text-yellow-500"}`}>
+              <span className={`ml-1 text-sm sm:text-xs ${t.priority === "HIGH" ? "text-red-500 font-semibold" : "text-yellow-500 font-semibold"}`}>
                 Priority: ({t.priority})
               </span>
             </li>

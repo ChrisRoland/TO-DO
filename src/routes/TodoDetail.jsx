@@ -214,7 +214,10 @@ export default function TodoDetail() {
 
       <DeleteTodoModal
         isOpen={showDeleteModal}
-        onClose={closeDeleteModal}
+        onClose={() => {
+          closeDeleteModal();
+          navigate({ to: "/" });
+        }}
         todo={selectedTodoForDelete}
       />
     </main>

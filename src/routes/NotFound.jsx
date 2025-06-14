@@ -1,4 +1,3 @@
-// pages/NotFound.jsx
 export default function NotFound() {
   return (
     <div className="not-found space-y-4 font-semibold flex flex-col items-center justify-center h-screen bg-red-100 dark:bg-red-950 text-gray-800 dark:text-gray-200">
