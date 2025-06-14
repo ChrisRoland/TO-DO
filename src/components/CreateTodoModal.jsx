@@ -2,11 +2,23 @@ import React, { useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "@tanstack/react-form";
 import { addTodo } from "../api/todo";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export default function CreateTodoModal({ isOpen, onClose }) {
   const queryClient = useQueryClient();
@@ -21,14 +33,14 @@ export default function CreateTodoModal({ isOpen, onClose }) {
     onError: (error) => {
       console.error("Error adding todo:", error);
       // I may add toast notif here in the future
-    }
+    },
   });
 
   const form = useForm({
     defaultValues: {
       name: "",
       description: "",
-      status: "TODO"
+      status: "TODO",
     },
     onSubmit: async ({ value }) => {
       if (value.name.trim()) {
@@ -67,7 +79,9 @@ export default function CreateTodoModal({ isOpen, onClose }) {
             >
               {(field) => (
                 <div>
-                  <Label htmlFor="create-name">Name <span className="text-red-500">*</span></Label>
+                  <Label htmlFor="create-name">
+                    Name <span className="text-red-500">*</span>
+                  </Label>
                   <Input
                     id="create-name"
                     value={field.state.value}
@@ -94,7 +108,7 @@ export default function CreateTodoModal({ isOpen, onClose }) {
                     value={field.state.value}
                     onChange={(e) => field.handleChange(e.target.value)}
                     onBlur={field.handleBlur}
-                    placeholder="Enter description (optional)..."
+                    placeholder="Enter description..."
                     disabled={addTodoMutation.isPending}
                   />
                 </div>
@@ -117,6 +131,28 @@ export default function CreateTodoModal({ isOpen, onClose }) {
                       <SelectItem value="TODO">Todo</SelectItem>
                       <SelectItem value="IN_PROGRESS">In Progress</SelectItem>
                       <SelectItem value="DONE">Done</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
+            </form.Field>
+            <form.Field name="priority">
+              {(field) => (
+                <div>
+                  <Label htmlFor="create-priority">Priority</Label>
+                  <Select
+                    id="create-priority"
+                    value={field.state.value}
+                    onValueChange={field.handleChange}
+                    disabled={addTodoMutation.isPending}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="LOW">Low</SelectItem>
+                      <SelectItem value="MEDIUM">Medium</SelectItem>
+                      <SelectItem value="HIGH">High</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>

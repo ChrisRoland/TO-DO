@@ -12,6 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 import {
   Select,
   SelectContent,
@@ -32,7 +33,7 @@ export default function UpdateTodoModal({ isOpen, onClose, todo }) {
     },
     onError: (error) => {
       console.error("Error updating todo:", error);
-        // I may add toast notif here in the future
+      // I may add toast notif here in the future
     },
   });
 
@@ -71,7 +72,7 @@ export default function UpdateTodoModal({ isOpen, onClose, todo }) {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Edit Todo</DialogTitle>
+          <DialogTitle>Update Todo</DialogTitle>
         </DialogHeader>
         <form
           onSubmit={(e) => {
@@ -90,7 +91,9 @@ export default function UpdateTodoModal({ isOpen, onClose, todo }) {
             >
               {(field) => (
                 <div>
-                  <Label htmlFor="update-name">Name <span className="text-red-500">*</span></Label>
+                  <Label htmlFor="update-name">
+                    Name <span className="text-red-500">*</span>
+                  </Label>
                   <Input
                     id="update-name"
                     value={field.state.value}
@@ -124,6 +127,29 @@ export default function UpdateTodoModal({ isOpen, onClose, todo }) {
               )}
             </form.Field>
 
+            <form.Field name="priority">
+              {(field) => (
+                <div>
+                  <Label htmlFor="update-priority">Priority</Label>
+                  <Select
+                    id="update-priority"
+                    value={field.state.value}
+                    onValueChange={field.handleChange}
+                    disabled={updateTodoMutation.isPending}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="LOW">Low</SelectItem>
+                      <SelectItem value="MEDIUM">Medium</SelectItem>
+                      <SelectItem value="HIGH">High</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
+            </form.Field>
+
             <form.Field name="status">
               {(field) => (
                 <div>
@@ -145,6 +171,20 @@ export default function UpdateTodoModal({ isOpen, onClose, todo }) {
                 </div>
               )}
             </form.Field>
+
+            <form.Field name="archived">
+              {(field) => (
+                <div className="flex items-center space-x-2">
+                  <Switch
+                    id="update-archived"
+                    checked={field.state.value}
+                    onCheckedChange={field.handleChange}
+                    disabled={updateTodoMutation.isPending}
+                  />
+                  <Label htmlFor="update-archived">Archive</Label>
+                </div>
+              )}
+            </form.Field>
           </div>
           <DialogFooter>
             <Button
@@ -156,7 +196,9 @@ export default function UpdateTodoModal({ isOpen, onClose, todo }) {
             >
               Cancel
             </Button>
-            <form.Subscribe selector={(state) => [state.canSubmit, state.isSubmitting]}>
+            <form.Subscribe
+              selector={(state) => [state.canSubmit, state.isSubmitting]}
+            >
               {([canSubmit]) => (
                 <Button
                   type="submit"
