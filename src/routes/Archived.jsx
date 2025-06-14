@@ -26,7 +26,7 @@ export default function Archived() {
               <Link to={`/todos/${t.id}`} className="font-medium">
                 {t.name} {" "}
               </Link>
-              <span className={`ml-1 text-sm sm:text-xs ${t.priority === "HIGH" ? "text-red-500" : "text-yellow-500"}`}>
+              <span className={`ml-1 text-sm sm:text-xs ${t.priority === "HIGH" ? "text-red-500 font-semibold" : "text-yellow-500 font-semibold"}`}>
                 Priority: ({t.priority})
               </span>
             </li>
