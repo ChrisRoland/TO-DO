@@ -24,7 +24,7 @@ export default function Important() {
       {highPriority.length === 0 ? (
         <p>No high-priority tasks.</p>
       ) : (
-        <ul className="space-y-2">
+        <ul className="space-y-2 max-sm:text-[19px]">
           {highPriority.map((t) => (
             <li
               key={t.id}
@@ -34,7 +34,7 @@ export default function Important() {
                 {t.name}
               </Link>
               <span
-                className={`ml-2 text-xs ${t.status === "DONE" ? "text-green-500/35" : "text-yellow-500/35"}`}
+                className={`ml-2 text-sm sm:text-xs ${t.status === "DONE" ? "text-green-500/35 max-sm:text-green-500" : "text-yellow-500/35 max-sm:text-yellow-500"}`}
               >
                 Status:{" "}
                 {t.status === "DONE"
