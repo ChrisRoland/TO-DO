@@ -34,7 +34,7 @@ export default function Important() {
                 {t.name}
               </Link>
               <span
-                className={`ml-2 text-sm sm:text-xs ${t.status === "DONE" ? "text-green-500/35 max-sm:text-green-500" : "text-yellow-500/35 max-sm:text-yellow-500"}`}
+                className={`ml-2 text-sm sm:text-xs ${t.status === "DONE" ? "text-green-500/85 max-sm:text-green-500 font-semibold" : "text-yellow-500/85 max-sm:text-yellow-500 font-semibold"}`}
               >
                 Status:{" "}
                 {t.status === "DONE"
