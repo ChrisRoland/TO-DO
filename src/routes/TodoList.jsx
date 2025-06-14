@@ -115,7 +115,7 @@ export default function TodoList() {
   return (
     <div>
       {/* Search & Filters */}
-      <div className="flex flex-wrap gap-2 mb-4 relative">
+      <div className="flex flex-wrap gap-2 mb-6 relative">
         <Input
           placeholder="Search todos…"
           value={search}
@@ -123,9 +123,9 @@ export default function TodoList() {
             setSearch(e.target.value);
             setPage(1);
           }}
-          className="dark:bg-gray-300/30 dark:border-gray-500"
+          className="dark:bg-gray-300/30 dark:border-gray-500 mb-4"
         />
-        <SearchIcon className="size-7 text-gray-500 absolute top-1 right-1 max-sm:hidden" />
+        <SearchIcon className="size-7 text-gray-500 dark:text-gray-400 absolute top-1 right-2" />
 
         {/* Filter buttons */}
         {["all", "complete", "incomplete"].map((f) => (
@@ -190,11 +190,6 @@ export default function TodoList() {
             <Link to={`/todos/${todo.id}`} className="text-lg font-medium">
               <CardHeader className="pr-16">{todo.name}</CardHeader>
               <CardContent className="text-gray-600 dark:text-gray-400">
-                {/* {todo.description && (
-                  <div className="mb-2 text-sm">
-                    {todo.description}
-                  </div>
-                )} */}
                 Status:{" "}
                 <span
                   className={`inline-flex items-center flex-row gap-1 ${todo.status === "DONE" ? "text-green-500" : "text-orange-500"}`}
