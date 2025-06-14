@@ -12,6 +12,7 @@ import App from './App'
 import TodoList from './routes/TodoList'
 import TodoDetail from './routes/TodoDetail'
 import Important from './routes/Important'
+import Archived  from './routes/Archived'
 import NotFound from './routes/NotFound'
 import ErrorComponent from './routes/ErrorComponent'
 
@@ -40,6 +41,13 @@ const importantRoute = createRoute({
   component: Important,
 })
 
+const archivedRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/archived',
+  component: Archived,
+})
+
+
 const notFoundRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '*',
@@ -50,6 +58,7 @@ const routeTree = rootRoute.addChildren([
   listRoute,
   detailRoute,
   importantRoute,
+  archivedRoute,
   notFoundRoute,
 ])
 
