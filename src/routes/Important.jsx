@@ -24,7 +24,7 @@ export default function Important() {
       {highPriority.length === 0 ? (
         <p>No high-priority tasks.</p>
       ) : (
-        <ul className="space-y-2 max-sm:text-[19px]">
+        <ul className="space-y-2 text-[19px]">
           {highPriority.map((t) => (
             <li
               key={t.id}
