@@ -28,7 +28,7 @@ export default function SideBar({ isOpen, onClose }) {
       iconColor: 'text-yellow-500',
     },
     {
-      path: '/archives',
+      path: '/archived',
       label: 'Archives',
       icon: Archive,
       iconColor: 'text-gray-500',
