@@ -4,7 +4,7 @@ A simple yet powerful Todo application built with React, TanStack Router, React 
 
 ---
 
-![](./public/ss/Screenshot%202025-06-14%20at%2017.25.51.png)
+![](./public/ss/image.png)
 
 ---
 
@@ -113,10 +113,10 @@ The API helpers live in `src/api/todo.jsx` .
 
 Here's the Live [URL](https://t0d0z.netlify.app/)
 
-![](./public/ss/ScreenRecording2025-06-14at16.48.58-ezgif.com-video-to-gif-converter.gif)
-![](./public/ss/ScreenRecording2025-06-14at16.48.58-ezgif.com-video-to-gif-converter-2.gif)
+![](./public/ss/Screen%20Recording%202025-06-15%20at%2012.58.16.mp4)
+<!-- ![](./public/ss/ScreenRecording2025-06-14at16.48.58-ezgif.com-video-to-gif-converter-2.gif)
 ![](./public/ss/ScreenRecording2025-06-14at16.48.58-ezgif.com-video-to-gif-converter-3.gif)
-![](./public/ss/ScreenRecording2025-06-14at16.48.58-ezgif.com-video-to-gif-converter-4.gif)
+![](./public/ss/ScreenRecording2025-06-14at16.48.58-ezgif.com-video-to-gif-converter-4.gif) -->
 
 ---
 
