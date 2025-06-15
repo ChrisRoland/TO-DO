@@ -111,6 +111,8 @@ The API helpers live in `src/api/todo.jsx` .
 
 ### Demos
 
+Here's the Live [URL](https://t0d0z.netlify.app/)
+
 ![](./public/ss/ScreenRecording2025-06-14at16.48.58-ezgif.com-video-to-gif-converter.gif)
 ![](./public/ss/ScreenRecording2025-06-14at16.48.58-ezgif.com-video-to-gif-converter-2.gif)
 ![](./public/ss/ScreenRecording2025-06-14at16.48.58-ezgif.com-video-to-gif-converter-3.gif)
@@ -123,7 +125,8 @@ The API helpers live in `src/api/todo.jsx` .
 
 * Cache API responses using localStorage (localforage)
 * Implement offline capability with IndexedDB (Dexie.js)
-* Add user authentication and per-user task lists
+* Add user authentication, User Profile, Log In and per-user task lists
+* Properly implement archiving feature
 * Customizeable tast durations
 * Integrate real backend API with persistent storage
 * Add drag-and-drop ordering for todos
