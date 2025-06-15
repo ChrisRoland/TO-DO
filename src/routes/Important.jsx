@@ -2,6 +2,8 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchTodos } from "../api/todo";
 import { Link } from "@tanstack/react-router";
+import { Card, CardContent } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Important() {
   const {
@@ -13,8 +15,26 @@ export default function Important() {
     queryFn: fetchTodos,
   });
 
-  if (isLoading) return <p>Loading important tasks…</p>;
-  if (isError) return <p>Failed to load important tasks.</p>;
+  if (isLoading) {
+    return (
+      <Card className="">
+        <CardContent className="p-6 space-y-2">
+          <Skeleton className="h-8 w-1/4" />
+          <Skeleton className="h-6 w-4/4" />
+          <Skeleton className="h-6 w-4/4" />
+          <Skeleton className="h-6 w-4/4" />
+          <Skeleton className="h-6 w-4/4" />
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (isError)
+    return (
+      <p className="animate-bounce max-w-md mx-auto bg-red-100 dark:bg-red-950 text-red-500">
+        Failed to load important tasks.
+      </p>
+    );
 
   const highPriority = todos.filter((t) => t.priority === "HIGH");
 
@@ -24,7 +44,7 @@ export default function Important() {
       {highPriority.length === 0 ? (
         <p>No high-priority tasks.</p>
       ) : (
-        <ul className="space-y-2">
+        <ul className="space-y-2 text-[19px]">
           {highPriority.map((t) => (
             <li
               key={t.id}
@@ -34,7 +54,7 @@ export default function Important() {
                 {t.name}
               </Link>
               <span
-                className={`ml-2 text-xs ${t.status === "DONE" ? "text-green-500/35" : "text-yellow-500/35"}`}
+                className={`ml-2 text-sm sm:text-xs ${t.status === "DONE" ? "text-green-500/85 max-sm:text-green-500 font-semibold" : "text-yellow-500/85 max-sm:text-yellow-500 font-semibold"}`}
               >
                 Status:{" "}
                 {t.status === "DONE"

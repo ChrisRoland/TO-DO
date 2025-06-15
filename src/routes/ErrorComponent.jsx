@@ -1,8 +1,20 @@
-export default function ErrorComponent({ error }) {
+import React from 'react';
+
+export default function ErrorComponent({ error, reset }) {
   return (
-    <div className="error-boundary p-4 text-center bg-red-50 border border-red-200 rounded">
-      <h2 className="text-2xl text-red-800 font-bold">Something went wrong!</h2>
-      <p className="text-red-600">* {error.message} *</p>
-    </div>
+    <main className="bg-red-200 p-8">
+      <h1 className="text-center text-3xl font-bold mb-4 text-red-600">
+        Something went wrong
+      </h1>
+      <pre className="whitespace-pre-wrap bg-red-900 p-4 rounded animate-pulse">
+        * {error?.message || 'An unknown error occurred'} *
+      </pre>
+      <button
+        onClick={reset}
+        className="mt-4 px-4 py-2 bg-gray-600 text-white rounded"
+      >
+        Try again
+      </button>
+    </main>
   );
 }
