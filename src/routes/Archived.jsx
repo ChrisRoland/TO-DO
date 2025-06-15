@@ -36,7 +36,7 @@ export default function Archived() {
       </p>
     );
 
-  const archived = todos.filter((t) => t.archived === true);
+  const archived = todos.filter((todo) => todo.archived === true);
 
   return (
     <div className="p-4">
@@ -45,18 +45,18 @@ export default function Archived() {
         <p>No archived tasks.</p>
       ) : (
         <ul className="space-y-2 text-[19px]">
-          {archived.map((t) => (
+          {archived.map((todo) => (
             <li
-              key={t.id}
+              key={todo.id}
               className="p-2 border border-gray-500 rounded hover:bg-gray-100 dark:hover:bg-gray-600"
             >
-              <Link to={`/todos/${t.id}`} className="font-medium">
-                {t.name}{" "}
+              <Link to={`/todos/${todo.id}`} className="font-medium">
+                {todo.name}{" "}
               </Link>
               <span
-                className={`ml-1 text-sm sm:text-xs ${t.priority === "HIGH" ? "text-red-500 font-semibold" : "text-yellow-500 font-semibold"}`}
+                className={`ml-1 text-sm sm:text-xs ${todo.priority === "HIGH" ? "text-red-500 font-semibold" : todo.priority === "MEDIUM" ? "text-yellow-500 font-semibold" : "text-orange-500 font-semibold"}`}
               >
-                Priority: ({t.priority})
+                Priority: ({todo.priority})
               </span>
             </li>
           ))}
