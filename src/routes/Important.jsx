@@ -36,7 +36,7 @@ export default function Important() {
       </p>
     );
 
-  const highPriority = todos.filter((t) => t.priority === "HIGH");
+  const highPriority = todos.filter((todo) => todo.priority === "HIGH");
 
   return (
     <div className="p-4">
@@ -45,21 +45,21 @@ export default function Important() {
         <p>No high-priority tasks.</p>
       ) : (
         <ul className="space-y-2 text-[19px]">
-          {highPriority.map((t) => (
+          {highPriority.map((todo) => (
             <li
-              key={t.id}
+              key={todo.id}
               className="p-2 border border-gray-500 rounded hover:bg-gray-100 dark:hover:bg-gray-600"
             >
-              <Link to={`/todos/${t.id}`} className="font-medium">
-                {t.name}
+              <Link to={`/todos/${todo.id}`} className="font-medium">
+                {todo.name}
               </Link>
               <span
-                className={`ml-2 text-sm sm:text-xs ${t.status === "DONE" ? "text-green-500/85 max-sm:text-green-500 font-semibold" : "text-yellow-500/85 max-sm:text-yellow-500 font-semibold"}`}
+                className={`ml-2 text-sm sm:text-xs ${todo.status === "DONE" ? "text-green-500/85 max-sm:text-green-500 font-semibold" : todo.status === "IN_PROGRESS" ? "text-yellow-500/85 max-sm:text-yellow-500 font-semibold" : "text-orange-500/85 max-sm:text-orange-500 font-semibold"}`}
               >
                 Status:{" "}
-                {t.status === "DONE"
+                {todo.status === "DONE"
                   ? " Completed"
-                  : t.status === "IN_PROGRESS"
+                  : todo.status === "IN_PROGRESS"
                     ? " In Progress"
                     : " Todo"}
               </span>
