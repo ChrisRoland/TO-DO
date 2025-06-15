@@ -15,6 +15,7 @@ import Important from './routes/Important'
 import Archived  from './routes/Archived'
 import NotFound from './routes/NotFound'
 import ErrorComponent from './routes/ErrorComponent'
+import TestError from './routes/TestError'
 
 const rootRoute = createRootRoute({
   component: App,
@@ -47,6 +48,11 @@ const archivedRoute = createRoute({
   component: Archived,
 })
 
+const testErrorRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/test-error',
+  component: TestError,
+})
 
 const notFoundRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -59,6 +65,7 @@ const routeTree = rootRoute.addChildren([
   detailRoute,
   importantRoute,
   archivedRoute,
+  testErrorRoute,
   notFoundRoute,
 ])
 
