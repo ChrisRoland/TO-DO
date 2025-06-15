@@ -165,7 +165,7 @@ export default function TodoDetail() {
             <p>
               <strong>Status:</strong>{" "}
               <span
-                className={`${todo.status === "DONE" ? "text-green-500" : "text-yellow-500"}`}
+                className={`${todo.status === "DONE" ? "text-green-500" : todo.status === "IN_PROGRESS" ? "text-yellow-500" : "text-orange-500"}`}
               >
                 {todo.status === "DONE"
                   ? " Completed"
@@ -177,7 +177,7 @@ export default function TodoDetail() {
             <p>
               <strong>Priority:</strong>{" "}
               <span
-                className={`${todo.priority === "HIGH" ? "text-red-500" : "text-yellow-500"}`}
+                className={`${todo.priority === "HIGH" ? "text-red-500" : todo.priority === "MEDIUM" ? "text-yellow-500" : "text-orange-500"}`}
               >
                 {todo.priority}
               </span>
