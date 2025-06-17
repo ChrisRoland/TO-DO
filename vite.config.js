@@ -1,6 +1,6 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import { ViteOffline } from 'vite-plugin-pwa'
+import { VitePWA } from 'vite-plugin-pwa'
 import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
 import path from "path";
 
@@ -14,7 +14,7 @@ export default defineConfig({
   plugins: [
     TanStackRouterVite({ target: "react", autoCodeSplitting: true }),
     react(),
-    ViteOffline({
+    VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['Logo.svg, favicon.svg', 'robots.txt', 'apple-touch-icon.png'],
       manifest: {
