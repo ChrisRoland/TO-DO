@@ -41,6 +41,7 @@ export default function CreateTodoModal({ isOpen, onClose }) {
       name: "",
       description: "",
       status: "TODO",
+      priority: "LOW",
     },
     onSubmit: async ({ value }) => {
       if (value.name.trim()) {
@@ -143,7 +144,7 @@ export default function CreateTodoModal({ isOpen, onClose }) {
                   <Select
                     id="create-priority"
                     value={field.state.value}
-                    onValueChange={field.handleChange}
+                    onValueChange={(value) => field.handleChange(value)}
                     disabled={addTodoMutation.isPending}
                   >
                     <SelectTrigger>
