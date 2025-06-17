@@ -1,6 +1,6 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import { VitePWA } from 'vite-plugin-pwa'
+import { ViteOffline } from 'vite-plugin-pwa'
 import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
 import path from "path";
 
@@ -14,9 +14,9 @@ export default defineConfig({
   plugins: [
     TanStackRouterVite({ target: "react", autoCodeSplitting: true }),
     react(),
-    VitePWA({
+    ViteOffline({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.svg', 'robots.txt', 'apple-touch-icon.png'],
+      includeAssets: ['Logo.svg, favicon.svg', 'robots.txt', 'apple-touch-icon.png'],
       manifest: {
         name: 'My Todo App',
         short_name: 'Todos',
@@ -25,9 +25,9 @@ export default defineConfig({
         background_color: '#ffffff',
         icons: [
           {
-            src: 'pwa-192x192.png',
+            src: 'logo.svg',
             sizes: '192x192',
-            type: 'image/png'
+            type: 'image/png/svg'
           },
           {
             src: 'pwa-512x512.png',
