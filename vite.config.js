@@ -16,7 +16,7 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.svg', 'robots.txt', 'apple-touch-icon.png'],
+      includeAssets: ['Logo.svg, favicon.svg', 'robots.txt', 'apple-touch-icon.png'],
       manifest: {
         name: 'My Todo App',
         short_name: 'Todos',
@@ -25,9 +25,9 @@ export default defineConfig({
         background_color: '#ffffff',
         icons: [
           {
-            src: 'pwa-192x192.png',
+            src: 'logo.svg',
             sizes: '192x192',
-            type: 'image/png'
+            type: 'image/png/svg'
           },
           {
             src: 'pwa-512x512.png',
