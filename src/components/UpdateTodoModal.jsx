@@ -42,6 +42,7 @@ export default function UpdateTodoModal({ isOpen, onClose, todo }) {
       name: todo?.name || "",
       description: todo?.description || "",
       status: todo?.status || "TODO",
+      priority: todo?.status || "LOW",
     },
     onSubmit: async ({ value }) => {
       if (todo && value.name.trim()) {
