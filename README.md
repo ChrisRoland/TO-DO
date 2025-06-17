@@ -1,6 +1,6 @@
 ## TO+DO
 
-A simple yet powerful Todo application built with React, TanStack Router, React Query(@tanstack), and Tailwind CSS. It allows users to manage tasks with features such as pagination, search, filtering, priority levels, archiving, and full CRUD operations against the JSONPlaceholder API.
+A simple yet powerful Todo application built with React, TanStack Router, React Query(@tanstack), and Tailwind CSS. It allows users to manage tasks with features such as pagination, search, filtering, priority levels, archiving,offline capability and full CRUD operations against a custom todo API.
 
 ---
 
@@ -19,6 +19,8 @@ A simple yet powerful Todo application built with React, TanStack Router, React 
 * **Create, Update & Delete** todos via modal forms
 * **Theme Toggle**: light and dark mode support
 * **Error Handling**: custom 404 page and Error Boundary
+* **Cache API responses** using localStorage (localforage)
+* **Offline capability** with IndexedDB (Dexie.js)
 * **Responsive Design**: mobile-first, accessible UI
 
 ---
@@ -120,8 +122,6 @@ Here's the Live [URL](https://t0d0z.netlify.app/)
 
 ### Future Improvements
 
-* Cache API responses using localStorage (localforage)
-* Implement offline capability with IndexedDB (Dexie.js)
 * Add user authentication, User Profile, Log In and per-user task lists
 * Properly implement archiving feature
 * Add toasts and notifications
