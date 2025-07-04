@@ -19,19 +19,19 @@ export default function SideBar({ isOpen, onClose }) {
 
   const navItems = [
     {
-      path: "/",
+      path: "/app/",
       label: "Todos",
       icon: CheckSquare,
       iconColor: "text-blue-500",
     },
     {
-      path: "/important",
+      path: "/app/important",
       label: "Important",
       icon: Star,
       iconColor: "text-yellow-500",
     },
     {
-      path: "/archived",
+      path: "/app/archived",
       label: "Archives",
       icon: Archive,
       iconColor: "text-gray-500",
