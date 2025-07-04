@@ -1,14 +1,15 @@
 import { useState } from 'react';
-import SideBar from "./components/SideBar";
-import SEO from "./components/SEO";
+import SideBar from "@/components/SideBar";
+import SEO from "@/components/SEO";
 import { Outlet } from "@tanstack/react-router";
 import { Menu } from 'lucide-react';
+import ProtectedRoute from '@/components/ProtectedRoute';
 
-export default function App() {
+export default function AppLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <>
+    <ProtectedRoute>
       <SEO />
       <div className="flex h-screen bg-white dark:bg-gray-800">
         <SideBar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
@@ -32,6 +33,6 @@ export default function App() {
           </div>
         </main>
       </div>
-    </>
+    </ProtectedRoute>
   );
 }
