@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 
 export default function SideBar({ isOpen, onClose }) {
   const { theme, toggleTheme } = useTheme();
-  const { user, signOut, getUserDisplayName } = useAuth();
+  const { user, signOut, getUserDisplayName, getUserAvatarUrl } = useAuth();
   const location = useLocation();
 
   // Function to check if a route is active
@@ -42,6 +42,8 @@ export default function SideBar({ isOpen, onClose }) {
     await signOut();
     onClose();
   };
+
+  const avatarUrl = getUserAvatarUrl();
 
   return (
     <>
@@ -85,7 +87,18 @@ export default function SideBar({ isOpen, onClose }) {
             <div className="bg-gray-300/50 dark:bg-gray-700/50 rounded-lg p-3">
               <div className="flex items-center space-x-3">
                 <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
-                  <User className="w-4 h-4 text-white" />
+                  {avatarUrl ? (
+                    <img 
+                      src={avatarUrl} 
+                      alt={getUserDisplayName()}
+                      className="w-full h-full rounded-full object-cover"
+                      onError={(e) => {
+                        // Fallback if image fails to load
+                        e.target.style.display = 'none';
+                        e.target.nextSibling.style.display = 'flex';
+                      }}
+                    />
+                  ) : null}
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-gray-900 dark:text-white truncate">

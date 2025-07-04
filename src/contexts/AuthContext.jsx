@@ -105,6 +105,13 @@ export const AuthProvider = ({ children }) => {
     return user.user_metadata?.full_name || user.email?.split('@')[0] || 'User'
   }
 
+  // Get user avatar URL
+  const getUserAvatarUrl = () => {
+    if (!user) return null
+    // Google OAuth provides avatar_url in user_metadata
+    return user.user_metadata?.avatar_url || user.user_metadata?.picture || null
+  }
+
   const value = {
     user,
     session,
@@ -113,7 +120,8 @@ export const AuthProvider = ({ children }) => {
     signIn,
     signInWithGoogle,
     signOut,
-    getUserDisplayName
+    getUserDisplayName,
+    getUserAvatarUrl
   }
 
   return (
