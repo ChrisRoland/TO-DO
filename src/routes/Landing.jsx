@@ -113,22 +113,22 @@ export default function Landing() {
               Everything You Need to Stay Organized
             </h3>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <div className="flex items-start space-x-3">
-                <CheckSquare className="h-6 w-6 text-blue-600 mt-1 flex-shrink-0" />
+              <div className="flex items-center space-x-3">
+                <CheckSquare className="h-8 w-8 text-blue-600 mt-1 flex-shrink-0" />
                 <div>
                   <h4 className="font-semibold text-gray-900 dark:text-white">Smart Prioritization</h4>
                   <p className="text-gray-600 dark:text-gray-300 text-sm">Set priorities and focus on what matters most</p>
                 </div>
               </div>
-              <div className="flex items-start space-x-3">
-                <Star className="h-6 w-6 text-yellow-500 mt-1 flex-shrink-0" />
+              <div className="flex items-center space-x-3">
+                <Star className="h-8 w-8 text-yellow-500 mt-1 flex-shrink-0" />
                 <div>
                   <h4 className="font-semibold text-gray-900 dark:text-white">Important Tasks</h4>
                   <p className="text-gray-600 dark:text-gray-300 text-sm">Quick access to your high-priority items</p>
                 </div>
               </div>
-              <div className="flex items-start space-x-3">
-                <Archive className="h-6 w-6 text-gray-500 mt-1 flex-shrink-0" />
+              <div className="flex items-center space-x-3">
+                <Archive className="h-8 w-8 text-gray-500 mt-1 flex-shrink-0" />
                 <div>
                   <h4 className="font-semibold text-gray-900 dark:text-white">Archive System</h4>
                   <p className="text-gray-600 dark:text-gray-300 text-sm">Keep completed tasks organized and accessible</p>
