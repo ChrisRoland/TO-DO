@@ -187,16 +187,14 @@ export default function TodoList() {
               </Button>
             </div>
 
-            <Link
-              to={`/todos/${todo.id}`}
-              className="text-lg max-sm:text-center font-medium"
-            >
+            <Link to={`/app/todos/${todo.id}`} className="text-lg max-sm:text-center font-medium">
+
               <CardHeader className="pr-16">{todo.name}</CardHeader>
               <CardContent className="flex gap-3 max-sm:justify-between text-[14px] text-gray-600 dark:text-gray-400">
                 <p>
                   Priority:{" "}
                   <span
-                    className={`inline-flex items-center flex-row gap-1 ${todo.priority === "HIGH" ? "text-red-500" : "text-yellow-500"}`}
+                    className={`inline-flex items-center flex-row gap-1 ${todo.priority === "HIGH" ? "text-red-500" : todo.priority === "MEDIUM" ? "text-yellow-500" : "text-orange-500"}`}
                   >
                     {todo.priority === "HIGH" ? (
                       <>(HIGH)</>
