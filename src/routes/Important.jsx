@@ -50,7 +50,7 @@ export default function Important() {
               key={todo.id}
               className="p-2 border border-gray-500 rounded hover:bg-gray-100 dark:hover:bg-gray-600"
             >
-              <Link to={`/todos/${todo.id}`} className="font-medium">
+              <Link to={`/app/todos/${todo.id}`} className="font-medium">
                 {todo.name}
               </Link>
               <span
