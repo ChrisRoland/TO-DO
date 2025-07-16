@@ -47,6 +47,7 @@ export default function TodoList() {
   const filtered = useMemo(
     () =>
       todos
+        .filter((t) => !t.archived)
         .filter((t) => t.name.toLowerCase().includes(search.toLowerCase()))
         .filter((t) =>
           status === "complete"
@@ -187,8 +188,10 @@ export default function TodoList() {
               </Button>
             </div>
 
-            <Link to={`/app/todos/${todo.id}`} className="text-lg max-sm:text-center font-medium">
-
+            <Link
+              to={`/app/todos/${todo.id}`}
+              className="text-lg max-sm:text-center font-medium"
+            >
               <CardHeader className="pr-16">{todo.name}</CardHeader>
               <CardContent className="flex gap-3 max-sm:justify-between text-[14px] text-gray-600 dark:text-gray-400">
                 <p>
