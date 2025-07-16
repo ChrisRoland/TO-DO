@@ -191,7 +191,6 @@ Here's the Live [URL](https://t0d0z.netlify.app/)
 
 ## Future Improvements
 
-* Properly implement archiving feature
 * Add toasts and notifications for better user feedback
 * Customizable task durations and deadlines
 * Add drag-and-drop ordering for todos
