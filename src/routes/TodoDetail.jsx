@@ -13,7 +13,7 @@ export default function TodoDetail() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  const { todoId } = useParams({ from: "/todos/$todoId" });
+  const { todoId } = useParams({ from: "/app/todos/$todoId" });
 
   const {
     data: todo,
@@ -64,7 +64,7 @@ export default function TodoDetail() {
       <Card className="max-w-md mx-auto bg-red-100 dark:bg-red-950 text-red-500">
         <CardContent className="p-6">
           <p className="text-center">* Invalid todo ID *</p>
-          <Button onClick={() => navigate({ to: "/" })} className="mt-4">
+          <Button onClick={() => navigate({ to: "/app/" })} className="mt-4">
             Back to List
           </Button>
         </CardContent>
@@ -93,7 +93,7 @@ export default function TodoDetail() {
           <p className="text-center">
             * Error loading todo: {error?.message || "Unknown error"} *
           </p>
-          <Button onClick={() => navigate({ to: "/" })} className="mt-4">
+          <Button onClick={() => navigate({ to: "/app/" })} className="mt-4">
             Back to List
           </Button>
         </CardContent>
@@ -106,7 +106,7 @@ export default function TodoDetail() {
       <Card className="max-w-md mx-auto bg-red-100 dark:bg-red-950 text-red-500">
         <CardContent className="p-6">
           <p className="text-center">Todo not found</p>
-          <Button onClick={() => navigate({ to: "/" })} className="mt-4">
+          <Button onClick={() => navigate({ to: "/app/" })} className="mt-4">
             Back to List
           </Button>
         </CardContent>
@@ -119,7 +119,7 @@ export default function TodoDetail() {
       <Card className="relative">
         <div className="flex items-center mt-4">
           <Button
-            onClick={() => navigate({ to: "/" })}
+            onClick={() => navigate({ to: "/app/" })}
             variant="ghost"
             size="sm"
             className="p-2 ml-5"
@@ -165,7 +165,7 @@ export default function TodoDetail() {
             <p>
               <strong>Status:</strong>{" "}
               <span
-                className={`${todo.status === "DONE" ? "text-green-500" : "text-yellow-500"}`}
+                className={`${todo.status === "DONE" ? "text-green-500" : todo.status === "IN_PROGRESS" ? "text-yellow-500" : "text-orange-500"}`}
               >
                 {todo.status === "DONE"
                   ? " Completed"
@@ -177,7 +177,7 @@ export default function TodoDetail() {
             <p>
               <strong>Priority:</strong>{" "}
               <span
-                className={`${todo.priority === "HIGH" ? "text-red-500" : "text-yellow-500"}`}
+                className={`${todo.priority === "HIGH" ? "text-red-500" : todo.priority === "MEDIUM" ? "text-yellow-500" : "text-orange-500"}`}
               >
                 {todo.priority}
               </span>
@@ -214,7 +214,10 @@ export default function TodoDetail() {
 
       <DeleteTodoModal
         isOpen={showDeleteModal}
-        onClose={closeDeleteModal}
+        onClose={() => {
+          closeDeleteModal();
+          navigate({ to: "/app/" });
+        }}
         todo={selectedTodoForDelete}
       />
     </main>

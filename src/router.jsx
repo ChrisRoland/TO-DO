@@ -5,49 +5,93 @@ import {
   createRoute,
   createRouter,
   Outlet,
+  Navigate,
 } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 
 import App from './App'
+import AppLayout from './App'
+import Landing from './routes/Landing'
+import Login from './routes/Login'
+import Register from './routes/Register'
 import TodoList from './routes/TodoList'
 import TodoDetail from './routes/TodoDetail'
 import Important from './routes/Important'
-import Archived  from './routes/Archived'
+import Archived from './routes/Archived'
 import NotFound from './routes/NotFound'
 import ErrorComponent from './routes/ErrorComponent'
+import TestError from './routes/TestError'
 
 const rootRoute = createRootRoute({
-  component: App,
+  component: () => (
+    <>
+      <Outlet />
+      <TanStackRouterDevtools />
+    </>
+  ),
   notFoundComponent: NotFound,
   errorComponent: ErrorComponent,
 })
 
-const listRoute = createRoute({
+// Public routes
+const landingRoute = createRoute({
   getParentRoute: () => rootRoute,
+  path: '/',
+  component: Landing,
+})
+
+const loginRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/login',
+  component: Login,
+})
+
+const registerRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/register',
+  component: Register,
+})
+
+// Protected app layout route
+const appLayoutRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/app',
+  component: AppLayout,
+})
+
+// Protected app routes (children of appLayoutRoute)
+const appIndexRoute = createRoute({
+  getParentRoute: () => appLayoutRoute,
   path: '/',
   component: TodoList,
 })
 
-const detailRoute = createRoute({
-  getParentRoute: () => rootRoute,
+const todoDetailRoute = createRoute({
+  getParentRoute: () => appLayoutRoute,
   path: '/todos/$todoId',
   component: TodoDetail,
   parseParams: (params) => ({ todoId: (params.todoId) }),
 })
 
 const importantRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => appLayoutRoute,
   path: '/important',
   component: Important,
 })
 
 const archivedRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => appLayoutRoute,
   path: '/archived',
   component: Archived,
 })
 
+const testErrorRoute = createRoute({
+  getParentRoute: () => appLayoutRoute,
+  path: '/test-error',
+  component: TestError,
+})
 
+// Catch-all route for unmatched paths
 const notFoundRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '*',
@@ -55,16 +99,22 @@ const notFoundRoute = createRoute({
 })
 
 const routeTree = rootRoute.addChildren([
-  listRoute,
-  detailRoute,
-  importantRoute,
-  archivedRoute,
+  landingRoute,
+  loginRoute,
+  registerRoute,
+  appLayoutRoute.addChildren([
+    appIndexRoute,
+    todoDetailRoute,
+    importantRoute,
+    archivedRoute,
+    testErrorRoute,
+  ]),
   notFoundRoute,
 ])
 
 const router = createRouter({ 
   routeTree,
-  defaultNotFoundComponent: NotFound, // fallback
+  defaultNotFoundComponent: NotFound,
 })
 
 export default router

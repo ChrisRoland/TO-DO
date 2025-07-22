@@ -47,6 +47,7 @@ export default function TodoList() {
   const filtered = useMemo(
     () =>
       todos
+        .filter((t) => !t.archived)
         .filter((t) => t.name.toLowerCase().includes(search.toLowerCase()))
         .filter((t) =>
           status === "complete"
@@ -115,7 +116,7 @@ export default function TodoList() {
   return (
     <div>
       {/* Search & Filters */}
-      <div className="flex flex-wrap gap-2 mb-4 relative">
+      <div className="flex flex-wrap gap-2 mb-6 relative">
         <Input
           placeholder="Search todos…"
           value={search}
@@ -123,9 +124,9 @@ export default function TodoList() {
             setSearch(e.target.value);
             setPage(1);
           }}
-          className="dark:bg-gray-300/30 dark:border-gray-500"
+          className="dark:bg-gray-300/30 dark:border-gray-500 mb-4"
         />
-        <SearchIcon className="size-7 text-gray-500 absolute top-1 right-1 max-sm:hidden" />
+        <SearchIcon className="size-7 text-gray-500 dark:text-gray-400 absolute top-1 right-2" />
 
         {/* Filter buttons */}
         {["all", "complete", "incomplete"].map((f) => (
@@ -187,35 +188,49 @@ export default function TodoList() {
               </Button>
             </div>
 
-            <Link to={`/todos/${todo.id}`} className="text-lg font-medium">
+            <Link
+              to={`/app/todos/${todo.id}`}
+              className="text-lg max-sm:text-center font-medium"
+            >
               <CardHeader className="pr-16">{todo.name}</CardHeader>
-              <CardContent className="text-gray-600 dark:text-gray-400">
-                {/* {todo.description && (
-                  <div className="mb-2 text-sm">
-                    {todo.description}
-                  </div>
-                )} */}
-                Status:{" "}
-                <span
-                  className={`inline-flex items-center flex-row gap-1 ${todo.status === "DONE" ? "text-green-500" : "text-orange-500"}`}
-                >
-                  {todo.status === "DONE" ? (
-                    <>
-                      Completed{" "}
-                      <CheckCheckIcon className="inline w-4 h-4 text-green-500" />
-                    </>
-                  ) : todo.status === "IN_PROGRESS" ? (
-                    <>
-                      In Progress{" "}
-                      <RefreshCcw className="inline w-4 h-4 text-yellow-500 animate-spin" />
-                    </>
-                  ) : (
-                    <>
-                      Todo{" "}
-                      <BadgeXIcon className="inline w-3 h-3 text-orange-500" />
-                    </>
-                  )}
-                </span>
+              <CardContent className="flex gap-3 max-sm:justify-between text-[14px] text-gray-600 dark:text-gray-400">
+                <p>
+                  Priority:{" "}
+                  <span
+                    className={`inline-flex items-center flex-row gap-1 ${todo.priority === "HIGH" ? "text-red-500" : todo.priority === "MEDIUM" ? "text-yellow-500" : "text-orange-500"}`}
+                  >
+                    {todo.priority === "HIGH" ? (
+                      <>(HIGH)</>
+                    ) : todo.priority === "MEDIUM" ? (
+                      <>(MED)</>
+                    ) : (
+                      <>(LOW)</>
+                    )}
+                  </span>
+                </p>
+                <p>
+                  Status:{" "}
+                  <span
+                    className={`inline-flex items-center flex-row gap-1 ${todo.status === "DONE" ? "text-green-500" : todo.status === "IN_PROGRESS" ? "text-yellow-500" : "text-orange-500"}`}
+                  >
+                    {todo.status === "DONE" ? (
+                      <>
+                        Completed{" "}
+                        <CheckCheckIcon className="inline w-4 h-4 text-green-500" />
+                      </>
+                    ) : todo.status === "IN_PROGRESS" ? (
+                      <>
+                        In Progress{" "}
+                        <RefreshCcw className="inline w-4 h-4 text-yellow-500 animate-spin" />
+                      </>
+                    ) : (
+                      <>
+                        Todo{" "}
+                        <BadgeXIcon className="inline w-3 h-3 text-orange-500" />
+                      </>
+                    )}
+                  </span>
+                </p>
               </CardContent>
             </Link>
           </Card>

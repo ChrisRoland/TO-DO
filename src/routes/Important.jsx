@@ -2,6 +2,8 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchTodos } from "../api/todo";
 import { Link } from "@tanstack/react-router";
+import { Card, CardContent } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Important() {
   const {
@@ -13,10 +15,28 @@ export default function Important() {
     queryFn: fetchTodos,
   });
 
-  if (isLoading) return <p>Loading important tasks…</p>;
-  if (isError) return <p>Failed to load important tasks.</p>;
+  if (isLoading) {
+    return (
+      <Card className="">
+        <CardContent className="p-6 space-y-2">
+          <Skeleton className="h-8 w-1/4" />
+          <Skeleton className="h-6 w-4/4" />
+          <Skeleton className="h-6 w-4/4" />
+          <Skeleton className="h-6 w-4/4" />
+          <Skeleton className="h-6 w-4/4" />
+        </CardContent>
+      </Card>
+    );
+  }
 
-  const highPriority = todos.filter((t) => t.priority === "HIGH");
+  if (isError)
+    return (
+      <p className="animate-bounce max-w-md mx-auto bg-red-100 dark:bg-red-950 text-red-500">
+        Failed to load important tasks.
+      </p>
+    );
+
+  const highPriority = todos.filter((todo) => todo.priority === "HIGH");
 
   return (
     <div className="p-4">
@@ -24,22 +44,22 @@ export default function Important() {
       {highPriority.length === 0 ? (
         <p>No high-priority tasks.</p>
       ) : (
-        <ul className="space-y-2">
-          {highPriority.map((t) => (
+        <ul className="space-y-2 text-[19px]">
+          {highPriority.map((todo) => (
             <li
-              key={t.id}
+              key={todo.id}
               className="p-2 border border-gray-500 rounded hover:bg-gray-100 dark:hover:bg-gray-600"
             >
-              <Link to={`/todos/${t.id}`} className="font-medium">
-                {t.name}
+              <Link to={`/app/todos/${todo.id}`} className="font-medium">
+                {todo.name}
               </Link>
               <span
-                className={`ml-2 text-xs ${t.status === "DONE" ? "text-green-500/35" : "text-yellow-500/35"}`}
+                className={`ml-2 text-sm sm:text-xs ${todo.status === "DONE" ? "text-green-500/85 max-sm:text-green-500 font-semibold" : todo.status === "IN_PROGRESS" ? "text-yellow-500/85 max-sm:text-yellow-500 font-semibold" : "text-orange-500/85 max-sm:text-orange-500 font-semibold"}`}
               >
                 Status:{" "}
-                {t.status === "DONE"
+                {todo.status === "DONE"
                   ? " Completed"
-                  : t.status === "IN_PROGRESS"
+                  : todo.status === "IN_PROGRESS"
                     ? " In Progress"
                     : " Todo"}
               </span>
