@@ -4,7 +4,12 @@ import { useTheme } from "../theme-context";
 import { useAuth } from "../contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 
-export default function SideBar({ isOpen, onClose }) {
+interface SideBarProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export default function SideBar({ isOpen, onClose }: SideBarProps) {
   const { theme, toggleTheme } = useTheme();
   const { user, signOut, getUserDisplayName, getUserAvatarUrl } = useAuth();
   const location = useLocation();
