@@ -1,7 +1,6 @@
 import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
+import vue from "@vitejs/plugin-vue";
 import { VitePWA } from 'vite-plugin-pwa'
-import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
 import path from "path";
 
 import { fileURLToPath } from "url";
@@ -12,8 +11,7 @@ const __dirname = dirname(__filename);
 
 export default defineConfig({
   plugins: [
-    TanStackRouterVite({ target: "react", autoCodeSplitting: true }),
-    react(),
+    vue(),
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['Logo.svg, favicon.svg', 'robots.txt', 'apple-touch-icon.png'],
