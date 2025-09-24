@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { watch } from 'vue'
 import { useAuthStore } from './stores/auth'
 
 // Lazy-loaded components
@@ -75,8 +76,20 @@ const router = createRouter({
 })
 
 // Navigation guard for authentication
-router.beforeEach((to) => {
+router.beforeEach(async (to) => {
   const authStore = useAuthStore()
+  
+  // Wait for auth to initialize if it hasn't yet
+  if (authStore.loading) {
+    await new Promise(resolve => {
+      const unwatch = watch(() => authStore.loading, (loading) => {
+        if (!loading) {
+          unwatch()
+          resolve(undefined)
+        }
+      })
+    })
+  }
   
   if (to.meta.requiresAuth && !authStore.user) {
     return { name: 'Login' }
