@@ -22,7 +22,7 @@ export const useAuthStore = defineStore('auth', () => {
   })
 
   // Actions
-  const signUp = async (email, password, fullName) => {
+  const signUp = async (email: string, password: string, fullName: string) => {
     try {
       const { data, error } = await supabase.auth.signUp({
         email,
@@ -31,18 +31,20 @@ export const useAuthStore = defineStore('auth', () => {
       })
       if (error) throw error
       return { data, error: null }
-    } catch (error: any) {
-      return { data: null, error: error.message }
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : 'An unexpected error occurred'
+      return { data: null, error: message }
     }
   }
 
-  const signIn = async (email, password) => {
+  const signIn = async (email: string, password: string) => {
     try {
       const { data, error } = await supabase.auth.signInWithPassword({ email, password })
       if (error) throw error
       return { data, error: null }
-    } catch (error: any) {
-      return { data: null, error: error.message }
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : 'An unexpected error occurred'
+      return { data: null, error: message }
     }
   }
 
@@ -54,8 +56,9 @@ export const useAuthStore = defineStore('auth', () => {
       })
       if (error) throw error
       return { data, error: null }
-    } catch (error: any) {
-      return { data: null, error: error.message }
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : 'An unexpected error occurred'
+      return { data: null, error: message }
     }
   }
 
@@ -64,8 +67,9 @@ export const useAuthStore = defineStore('auth', () => {
       const { error } = await supabase.auth.signOut()
       if (error) throw error
       return { error: null }
-    } catch (error: any) {
-      return { error: error.message }
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : 'An unexpected error occurred'
+      return { error: message }
     }
   }
 
