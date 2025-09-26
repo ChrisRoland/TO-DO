@@ -4,13 +4,6 @@
 @tailwind components;
 @tailwind utilities;
 
-#app {
-  margin: 0 auto;
-  padding: 0;
-  font-weight: normal;
-}
-
-
 @layer base {
   :root {
     --background: 0 0% 100%;

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RouterLink, useRoute } from 'vue-router'
+import { RouterLink, useRoute, useRouter } from 'vue-router'
 import { Sun, Moon, CheckSquare, Star, Archive, X, LogOut } from 'lucide-vue-next'
 import { useThemeStore } from '@/stores/theme'
 import { useAuthStore } from '@/stores/auth'
@@ -13,6 +13,7 @@ const emit = defineEmits(['close'])
 
 const themeStore = useThemeStore()
 const auth = useAuthStore()
+const router = useRouter()
 const route = useRoute()
 
 const isActive = (path: string) => {
@@ -31,6 +32,7 @@ const navItems = [
 const handleSignOut = async () => {
   await auth.signOut()
   emit('close')
+  router.push('/login')
 }
 </script>
 
@@ -53,25 +55,31 @@ const handleSignOut = async () => {
       <RouterLink to="/app" @click="emit('close')" class="text-2xl font-bold text-white">
         T0 + D0
       </RouterLink>
-      <button @click="emit('close')" class="p-2 rounded-md hover:bg-gray-300 dark:hover:bg-gray-700">
+      <button
+        @click="emit('close')"
+        class="p-2 rounded-md hover:bg-gray-300 dark:hover:bg-gray-700"
+      >
         <X :size="20" />
       </button>
     </div>
 
     <div class="space-y-6">
-      <RouterLink to="/app" class="text-2xl font-bold hidden lg:block">
-        T0 + D0
-      </RouterLink>
+      <RouterLink to="/app" class="text-2xl font-bold hidden lg:block"> T0 + D0 </RouterLink>
 
       <div v-if="auth.user" class="bg-gray-300/50 dark:bg-gray-700/50 rounded-lg p-3">
         <div class="flex items-center space-x-3">
-          <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
+          <div
+            class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold"
+          >
             <img
               v-if="auth.getUserAvatarUrl"
               :src="auth.getUserAvatarUrl"
               :alt="auth.getUserDisplayName || 'User'"
               class="w-full h-full rounded-full object-cover"
             />
+            <span v-else>
+              {{ auth.getUserDisplayName?.charAt(0).toUpperCase() }}
+            </span>
           </div>
           <div class="flex-1 min-w-0">
             <p class="text-sm font-medium text-gray-900 dark:text-white truncate">
@@ -104,7 +112,10 @@ const handleSignOut = async () => {
               ]"
               @click="emit('close')"
             >
-              <component :is="item.icon" :class="['size-4', isActive(item.path) ? '' : item.iconColor]" />
+              <component
+                :is="item.icon"
+                :class="['size-4', isActive(item.path) ? '' : item.iconColor]"
+              />
               {{ item.label }}
             </RouterLink>
           </li>
@@ -113,7 +124,11 @@ const handleSignOut = async () => {
     </div>
 
     <div class="flex flex-col items-center space-y-3">
-      <button @click="themeStore.toggleTheme" aria-label="Toggle light/dark mode" class="p-2 rounded-full bg-gray-300 dark:bg-gray-700 hover:bg-gray-400 dark:hover:bg-gray-600">
+      <button
+        @click="themeStore.toggleTheme"
+        aria-label="Toggle light/dark mode"
+        class="p-2 rounded-full bg-gray-300 dark:bg-gray-700 hover:bg-gray-400 dark:hover:bg-gray-600"
+      >
         <Moon v-if="themeStore.theme === 'light'" :size="20" />
         <Sun v-else :size="20" />
       </button>
@@ -121,7 +136,12 @@ const handleSignOut = async () => {
         {{ themeStore.theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode' }}
       </p>
 
-      <Button @click="handleSignOut" variant="ghost" size="sm" class="w-full text-red-600 hover:text-red-700 hover:bg-red-50 dark:text-red-400 dark:hover:text-red-300 dark:hover:bg-red-900/20">
+      <Button
+        @click="handleSignOut"
+        variant="ghost"
+        size="sm"
+        class="w-full text-red-600 hover:text-red-700 hover:bg-red-50 dark:text-red-400 dark:hover:text-red-300 dark:hover:bg-red-900/20"
+      >
         <LogOut class="w-4 h-4 mr-2" />
         Sign Out
       </Button>

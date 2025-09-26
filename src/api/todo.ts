@@ -32,7 +32,7 @@ const db = new TodoDatabase()
 interface QueueOperation {
   id?: number
   type: 'ADD' | 'UPDATE' | 'DELETE'
-  payload: any
+  payload: CreateTodoData | (UpdateTodoData & { id: string }) | { id: string }
 }
 
 const QueueOpType = {
@@ -57,14 +57,14 @@ const processQueue = async (): Promise<void> => {
         await cache.setItem('todos', [...currentTodos, data])
         await db.todos.add(data)
       } else if (op.type === QueueOpType.UPDATE) {
-        const { id, ...rest } = op.payload
+        const { id, ...rest } = op.payload as UpdateTodoData & { id: string }
         const { data } = await api.patch(`/tasks/${id}`, rest)
         const list = (await cache.getItem('todos') as Todo[]) || []
         const updatedList = list.map(t => t.id === id ? data : t)
         await cache.setItem('todos', updatedList)
         await db.todos.put(data)
       } else if (op.type === QueueOpType.DELETE) {
-        const { id } = op.payload
+        const { id } = op.payload as { id: string }
         await api.delete(`/tasks/${id}`)
         const list = (await cache.getItem('todos') as Todo[]) || []
         const filtered = list.filter(t => t.id !== id)

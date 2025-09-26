@@ -23,6 +23,9 @@ const { isPending, mutate } = useMutation({
     toast.success('Todo deleted successfully!')
     emit('close')
   },
+  onError: () => {
+    toast.error('Failed to delete todo. Please try again.')
+  },
 })
 
 const handleDelete = () => {
