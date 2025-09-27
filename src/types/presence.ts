@@ -8,7 +8,7 @@ export interface UserPresence {
 export interface PresenceUser {
   id: string
   name: string
-  avatar?: string | undefined // Changed to undefined to match usage
+  avatar?: string | undefined
   online_at?: string
 }
 

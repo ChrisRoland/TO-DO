@@ -24,16 +24,22 @@ const supabase = createClient(supabaseUrl, supabaseKey)
 const onlineUsers = ref(0)
 const userList = ref<PresenceUser[]>([])
 const channel = ref<RealtimeChannel | null>(null)
+const presenceLoading = ref(false)
+const isPresenceSetup = ref(false)
 
 // Setup presence tracking
 const setupPresence = () => {
-  if (!auth.user?.id) return
+  presenceLoading.value = true
+  isPresenceSetup.value = true
+
+  // Create a unique key for anonymous users or use user ID
+  const presenceKey = auth.user?.id || `anonymous-${Math.random().toString(36).substr(2, 9)}`
 
   // Create a channel for the todo app presence
   channel.value = supabase.channel('todo-app-presence', {
     config: {
       presence: {
-        key: auth.user.id,
+        key: presenceKey,
       },
     },
   })
@@ -68,16 +74,20 @@ const setupPresence = () => {
       toast.error(`${userPresence.name || 'Someone'} left the page`)
     })
     .subscribe(async (status: string) => {
-      if (status === 'SUBSCRIBED' && auth.user?.id) {
+      if (status === 'SUBSCRIBED') {
         // Send initial presence
         const presenceData: UserPresence = {
-          user_id: auth.user.id,
-          name: auth.getUserDisplayName || 'Anonymous User',
-          avatar: auth.getUserAvatarUrl || null,
+          user_id: auth.user?.id || 'anonymous',
+          name: auth.user?.id ? auth.getUserDisplayName || 'Anonymous User' : 'Anonymous User',
+          avatar: auth.user?.id ? auth.getUserAvatarUrl || null : null,
           online_at: new Date().toISOString(),
         }
 
         await channel.value?.track(presenceData)
+        presenceLoading.value = false
+      } else if (status === 'CHANNEL_ERROR') {
+        presenceLoading.value = false
+        console.error('Error subscribing to presence channel')
       }
     })
 }
@@ -89,29 +99,56 @@ const cleanup = () => {
     channel.value.unsubscribe()
     channel.value = null
   }
+  presenceLoading.value = false
+  isPresenceSetup.value = false
+  onlineUsers.value = 0
+  userList.value = []
 }
 
 // Format presence message
 const getPresenceMessage = (): string => {
-  if (onlineUsers.value === 0) {
+  // If auth is still loading, show loading
+  if (auth.loading) {
     return 'Loading...'
-  } else if (onlineUsers.value === 1) {
-    return 'You are the only user viewing this page'
+  }
+
+  // If presence is being set up or loading
+  if (presenceLoading.value || (isPresenceSetup.value && onlineUsers.value === 0)) {
+    return 'Connecting...'
+  }
+
+  // If no presence setup
+  if (!isPresenceSetup.value) {
+    return 'Presence unavailable'
+  }
+
+  // Normal presence messages
+  if (onlineUsers.value === 1) {
+    return auth.user?.id
+      ? 'You are the only user viewing this page'
+      : '1 anonymous user viewing this page'
+  } else if (onlineUsers.value > 1) {
+    if (auth.user?.id) {
+      return `You and ${onlineUsers.value - 1} other users are currently viewing this page`
+    } else {
+      return `${onlineUsers.value} anonymous users viewing this page`
+    }
   } else {
-    return `You and ${onlineUsers.value - 1} other users are currently viewing this page`
+    return 'No users online'
   }
 }
 
-// Get other users (excluding current user)
+// Get other users (excluding current user for authenticated users only)
 const getOtherUsers = (): PresenceUser[] => {
-  return userList.value.filter((user) => user.id !== auth.user?.id)
+  if (auth.user?.id) {
+    return userList.value.filter((user) => user.id !== auth.user?.id)
+  }
+  return [] // Don't show individual users when not authenticated
 }
 
 // Lifecycle
 onMounted(() => {
-  if (auth.user?.id) {
-    setupPresence()
-  }
+  setupPresence()
 })
 
 onUnmounted(() => {
@@ -120,11 +157,12 @@ onUnmounted(() => {
 
 // Watch for auth changes
 auth.$subscribe((mutation, state) => {
+  // If user logs in and we don't have presence setup, set it up
   if (state.user?.id && !channel.value) {
     setupPresence()
-  } else if (!state.user?.id && channel.value) {
-    cleanup()
   }
+  // If user logs out, we keep the presence but they become anonymous
+  // The presence will automatically update on next sync
 })
 </script>
 
@@ -133,10 +171,15 @@ auth.$subscribe((mutation, state) => {
     <!-- Main presence badge -->
     <Badge
       variant="outline"
-      class="flex items-center gap-2 px-3 py-1 bg-green-50 border-green-200 text-green-700 dark:bg-green-900/20 dark:border-green-800 dark:text-green-400"
+      :class="`flex items-center gap-2 px-3 py-1 ${
+        onlineUsers > 0
+          ? 'bg-green-50 border-green-200 text-green-700 dark:bg-green-900/20 dark:border-green-800 dark:text-green-400'
+          : 'bg-gray-50 border-gray-200 text-gray-600 dark:bg-gray-900/20 dark:border-gray-700 dark:text-gray-400'
+      }`"
     >
       <div class="flex items-center gap-1">
-        <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+        <div v-if="onlineUsers > 0" class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+        <div v-else class="w-2 h-2 bg-gray-400 rounded-full"></div>
         <Eye class="w-3 h-3" />
       </div>
       <span class="text-xs font-medium">
@@ -144,8 +187,8 @@ auth.$subscribe((mutation, state) => {
       </span>
     </Badge>
 
-    <!-- Show other users if more than just current user -->
-    <div v-if="getOtherUsers().length > 0" class="flex items-center gap-1">
+    <!-- Show other users if more than just current user and user is authenticated -->
+    <div v-if="auth.user?.id && getOtherUsers().length > 0" class="flex items-center gap-1">
       <div v-for="user in getOtherUsers().slice(0, 3)" :key="user.id" class="relative">
         <div
           class="max-sm:hidden w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center text-xs text-white font-medium overflow-hidden"

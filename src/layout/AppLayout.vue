@@ -53,7 +53,7 @@ const aiAssistantOpen = ref(false)
     <SideBar :is-open="sidebarOpen" @close="sidebarOpen = false" />
     <main class="flex-1 overflow-y-auto relative" role="main" aria-label="Main content">
       <!-- presence indicator -->
-      <div class="flex items-center justify-center p-4 pb-0">
+      <div class="flex items-center justify-center p-4 max-sm:p-2">
         <RealtimePresence />
       </div>
       <!-- Mobile Header -->

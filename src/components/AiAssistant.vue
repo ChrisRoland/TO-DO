@@ -59,7 +59,7 @@ const messages = ref<Message[]>([
     id: '1',
     role: 'assistant',
     content:
-      "Hi! I'm your AI task assistant with full access to your todos. I can help you:\n\n• Organize and prioritize existing tasks\n• Create new todos with smart suggestions\n• Update or complete existing tasks\n• Analyze your productivity patterns\n• Break down complex projects\n\nTry asking: 'Show me my high-priority tasks' or 'Help me organize my todos'",
+      "Hi! I'm your AI task assistant with full access to your todos. I can help you:\n\n• Organize and prioritize existing tasks\n• Create new todos with smart suggestions\n• Update or complete existing tasks\n• Analyze your productivity patterns\n• Break down complex projects\n\nTry asking: 'What can you do?' or 'Show me my high priority tasks.'",
     timestamp: new Date(),
   },
 ])
@@ -362,6 +362,7 @@ FOR CREATING TASKS:
 - Example if there are no details: "Please provide more details about the task - title, description, priority, etc."
 - Wait for user to provide details
 - Then system will automatically create the task
+- Do NOT affirm any action until the system has actually executed it
 
 FOR MODIFYING EXISTING TASKS:
 - When user asks to complete, delete, or update a task, use the EXACT task name
@@ -371,6 +372,9 @@ FOR MODIFYING EXISTING TASKS:
 FOR SUGGESTING NEW TASKS:
 - When user asks for help planning, format suggestions as:
   1. Task name [HIGH/MEDIUM/LOW] (TODO/IN_PROGRESS/DONE)
+
+WHEN LISTING TODOS:
+- Only list 20 tasks max and then ask the user if they want to see more
 
 Be helpful, concise, and actionable. Always respond as if you're actually performing the requested actions.`,
           },
@@ -471,19 +475,27 @@ Be helpful, concise, and actionable. Always respond as if you're actually perfor
 
 // Execute todo actions manually (for button clicks)
 const executeTodoAction = async (action: TodoAction) => {
-  await executeAutomaticAction(action)
+  console.log('Executing todo action:', action)
+  try {
+    await executeAutomaticAction(action)
+    toast.success(`Successfully ${action.type}d "${action.todoName}"`)
+  } catch (error) {
+    console.error('Error executing todo action:', error)
+    toast.error(`Failed to ${action.type} "${action.todoName}"`)
+  }
 }
 
 // Create todo from suggestion
 const createTodoFromSuggestion = async (suggestion: TodoSuggestion) => {
+  console.log('Creating todo from suggestion:', suggestion)
   try {
-    console.log('Creating todo from suggestion:', suggestion)
     await createTodoMutation.mutateAsync({
       name: suggestion.name,
       description: suggestion.description,
       priority: suggestion.priority,
       status: suggestion.status || 'TODO',
     })
+    toast.success(`Successfully created "${suggestion.name}"`)
   } catch (error) {
     console.error('Failed to create todo from suggestion:', error)
     toast.error(`Failed to create "${suggestion.name}"`)
@@ -633,13 +645,18 @@ watch(
                     <Button
                       size="sm"
                       variant="ghost"
-                      @click="executeTodoAction(action)"
-                      :disabled="updateTodoMutation.isPending || deleteTodoMutation.isPending"
-                      class="h-6 px-2 hover:bg-accent cursor-pointer"
+                      @click.stop="executeTodoAction(action)"
+                      :disabled="
+                        (action.type === 'complete' || action.type === 'update') ? updateTodoMutation.isPending.value : 
+                        action.type === 'delete' ? deleteTodoMutation.isPending.value : 
+                        false
+                      "
+                      class="h-8 px-3 hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground transition-colors"
+                      type="button"
                     >
-                      <Check v-if="action.type === 'complete'" class="w-3 h-3" />
-                      <Trash2 v-else-if="action.type === 'delete'" class="w-3 h-3" />
-                      <Edit v-else class="w-3 h-3" />
+                      <Check v-if="action.type === 'complete'" class="w-4 h-4" />
+                      <Trash2 v-else-if="action.type === 'delete'" class="w-4 h-4" />
+                      <Edit v-else class="w-4 h-4" />
                     </Button>
                   </div>
                 </div>
@@ -664,11 +681,12 @@ watch(
                     <Button
                       size="sm"
                       variant="ghost"
-                      @click="createTodoFromSuggestion(suggestion)"
-                      :disabled="createTodoMutation.isPending"
-                      class="h-6 px-2 hover:bg-accent cursor-pointer"
+                      @click.stop="createTodoFromSuggestion(suggestion)"
+                      :disabled="createTodoMutation.isPending.value"
+                      class="h-8 px-3 hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground transition-colors"
+                      type="button"
                     >
-                      <Plus class="w-3 h-3" />
+                      <Plus class="w-4 h-4" />
                     </Button>
                   </div>
                 </div>
@@ -723,7 +741,7 @@ watch(
         <div class="flex gap-2">
           <Input
             v-model="inputMessage"
-            placeholder="Ask what I can do..."
+            placeholder="Ask me anything about your todos..."
             class="flex-1"
             @keypress="handleKeyPress"
             :disabled="isLoading"

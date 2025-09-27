@@ -11,13 +11,18 @@ import { Skeleton } from '@/components/ui/skeleton'
 import type { Todo } from '@/types/todo'
 
 useSeo({ title: 'Important Tasks - T0+D0' })
-const { data: todos, isLoading, isError } = useQuery({
+const {
+  data: todos,
+  isLoading,
+  isError,
+} = useQuery({
   queryKey: ['todos'],
   queryFn: fetchTodos,
-  initialData: [],
 })
 
-const highPriority = computed(() => (todos.value || []).filter((todo: Todo) => todo.priority === 'HIGH' && !todo.archived))
+const highPriority = computed(() =>
+  (todos.value || []).filter((todo: Todo) => todo.priority === 'HIGH' && !todo.archived),
+)
 </script>
 
 <template>
@@ -26,7 +31,7 @@ const highPriority = computed(() => (todos.value || []).filter((todo: Todo) => t
 
     <Card v-if="isLoading">
       <CardContent class="p-6 space-y-2">
-        <Skeleton class="h-8 w-1/4" />
+        <Skeleton class="h-8 w-full" />
         <Skeleton class="h-6 w-full" />
         <Skeleton class="h-6 w-full" />
         <Skeleton class="h-6 w-full" />
@@ -34,13 +39,16 @@ const highPriority = computed(() => (todos.value || []).filter((todo: Todo) => t
       </CardContent>
     </Card>
 
-    <p v-else-if="isError" class="animate-bounce max-w-md mx-auto bg-red-100 dark:bg-red-950 text-red-500">
+    <p
+      v-else-if="isError"
+      class="animate-bounce max-w-md mx-auto bg-red-100 dark:bg-red-950 text-red-500"
+    >
       Failed to load important tasks.
     </p>
 
     <div v-else>
-      <p v-if="highPriority.length === 0">No high-priority tasks.</p>
-      <ul v-else class="space-y-2 text-[19px]">
+      <p v-if="!isLoading && highPriority.length === 0">No high-priority tasks.</p>
+      <ul v-else-if="!isLoading" class="space-y-2 text-[19px]">
         <li
           v-for="todo in highPriority"
           :key="todo.id"
@@ -52,12 +60,21 @@ const highPriority = computed(() => (todos.value || []).filter((todo: Todo) => t
           <span
             :class="[
               'ml-2 text-sm sm:text-xs font-semibold',
-              todo.status === 'DONE' ? 'text-green-500/85 max-sm:text-green-500' : 
-              todo.status === 'IN_PROGRESS' ? 'text-yellow-500/85 max-sm:text-yellow-500' : 
-              'text-orange-500/85 max-sm:text-orange-500'
+              todo.status === 'DONE'
+                ? 'text-green-500/85 max-sm:text-green-500'
+                : todo.status === 'IN_PROGRESS'
+                  ? 'text-yellow-500/85 max-sm:text-yellow-500'
+                  : 'text-orange-500/85 max-sm:text-orange-500',
             ]"
           >
-            Status: {{ todo.status === "DONE" ? " Completed" : todo.status === "IN_PROGRESS" ? " In Progress" : " Todo" }}
+            Status:
+            {{
+              todo.status === 'DONE'
+                ? ' Completed'
+                : todo.status === 'IN_PROGRESS'
+                  ? ' In Progress'
+                  : ' Todo'
+            }}
           </span>
         </li>
       </ul>

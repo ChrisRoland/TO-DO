@@ -17,13 +17,15 @@ useSeo({ title: 'Welcome - T0+D0' })
   >
     <!-- Header -->
     <header class="relative z-10 px-6 py-4">
+      <div class="md:hidden flex items-center justify-center p-4">
+        <RealTimeUserPresence />
+      </div>
       <div class="max-w-7xl mx-auto flex items-center justify-between">
         <div class="flex items-center space-x-2">
           <CheckSquare class="h-8 w-8 text-blue-600" />
           <h1 class="text-2xl font-bold text-gray-900 dark:text-white">T0 + D0</h1>
         </div>
-
-        <div class="flex items-center justify-between p-4">
+        <div class="max-sm:hidden flex items-center justify-center p-4">
           <RealTimeUserPresence />
         </div>
         <div class="flex items-center space-x-4">

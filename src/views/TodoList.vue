@@ -18,7 +18,6 @@ useSeo({ title: 'Your Todos - T0+D0' })
 const { data: todos, isLoading, isError } = useQuery({
   queryKey: ['todos'],
   queryFn: fetchTodos,
-  initialData: [],
 })
 
 // States
@@ -85,13 +84,31 @@ const openDeleteModal = (todo: Todo) => {
 
 <template>
   <div>
-    <div v-if="isLoading" class="flex flex-col space-y-3">
-      <Skeleton v-for="i in 6" :key="i" class="h-[125px] w-full rounded-xl" />
+    <!-- Loading state -->
+    <div v-if="isLoading">
+      <!-- Search and filter skeleton -->
+      <div class="flex flex-wrap gap-2 mb-6">
+        <Skeleton class="h-10 w-full mb-4" />
+      </div>
+      
+      <!-- Todo cards skeleton -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <Card v-for="i in 8" :key="i" class="border rounded-lg p-4">
+          <Skeleton class="h-6 w-3/4 mb-3" />
+          <div class="space-y-2">
+            <Skeleton class="h-4 w-1/2" />
+            <Skeleton class="h-4 w-2/3" />
+          </div>
+        </Card>
+      </div>
     </div>
+
+    <!-- Error state -->
     <div v-else-if="isError" class="animate-bounce max-w-md mx-auto bg-red-100 dark:bg-red-950 text-red-500 p-4 rounded-md">
       Failed to load todos.
     </div>
 
+    <!-- Content -->
     <div v-else>
       <div class="flex flex-wrap gap-2 mb-6 relative">
         <Input
@@ -158,12 +175,12 @@ const openDeleteModal = (todo: Todo) => {
         </Card>
       </div>
 
-      <div v-if="filtered.length === 0" class="text-center py-8 text-gray-500 dark:text-gray-400">
+      <div v-if="!isLoading && filtered.length === 0" class="text-center py-8 text-gray-500 dark:text-gray-400">
         <p class="text-lg">No todos found</p>
         <p v-if="search" class="text-sm mt-2">Try adjusting your search term or filters</p>
       </div>
 
-      <div v-if="filtered.length > 0" class="flex items-center justify-between mt-6 mb-2 text-sm text-gray-600 dark:text-gray-400">
+      <div v-if="!isLoading && filtered.length > 0" class="flex items-center justify-between mt-6 mb-2 text-sm text-gray-600 dark:text-gray-400">
         <div>
           Showing {{ (page - 1) * perPage + 1 }} to {{ Math.min(page * perPage, filtered.length) }} of {{ filtered.length }}
         </div>

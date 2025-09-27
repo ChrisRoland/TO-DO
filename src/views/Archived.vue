@@ -11,10 +11,13 @@ import { Skeleton } from '@/components/ui/skeleton'
 useSeo({ title: 'Archived Tasks - T0+D0' })
 import type { Todo } from '@/types/todo'
 
-const { data: todos, isLoading, isError } = useQuery({
+const {
+  data: todos,
+  isLoading,
+  isError,
+} = useQuery({
   queryKey: ['todos'],
   queryFn: fetchTodos,
-  initialData: [],
 })
 
 const archived = computed(() => (todos.value ?? []).filter((todo: Todo) => todo.archived === true))
@@ -34,13 +37,16 @@ const archived = computed(() => (todos.value ?? []).filter((todo: Todo) => todo.
       </CardContent>
     </Card>
 
-    <p v-else-if="isError" class="animate-bounce max-w-md mx-auto bg-red-100 dark:bg-red-950 text-red-500">
+    <p
+      v-else-if="isError"
+      class="animate-bounce max-w-md mx-auto bg-red-100 dark:bg-red-950 text-red-500"
+    >
       Failed to load archived tasks.
     </p>
 
     <div v-else>
-      <p v-if="archived.length === 0">No archived tasks.</p>
-      <ul v-else class="space-y-2 text-[19px]">
+      <p v-if="!isLoading && archived.length === 0">No archived tasks.</p>
+      <ul v-else-if="!isLoading" class="space-y-2 text-[19px]">
         <li
           v-for="todo in archived"
           :key="todo.id"
@@ -52,9 +58,11 @@ const archived = computed(() => (todos.value ?? []).filter((todo: Todo) => todo.
           <span
             :class="[
               'ml-1 text-sm sm:text-xs font-semibold',
-              todo.priority === 'HIGH' ? 'text-red-500' :
-              todo.priority === 'MEDIUM' ? 'text-yellow-500' :
-              'text-orange-500'
+              todo.priority === 'HIGH'
+                ? 'text-red-500'
+                : todo.priority === 'MEDIUM'
+                  ? 'text-yellow-500'
+                  : 'text-orange-500',
             ]"
           >
             Priority: ({{ todo.priority }})
